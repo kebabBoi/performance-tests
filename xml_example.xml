@@ -1,0 +1,11 @@
+<user>
+    <id>1</id>
+    <first_name>Michael</first_name>
+    <last_name>Jordan</last_name>
+    <email>mj@mail.ru</email>
+    <address>
+        <street>Gold St.</street>
+        <city>California</city>
+        <zip>100100</zip>
+    </address>
+</user>
