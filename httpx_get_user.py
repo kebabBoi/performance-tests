@@ -36,9 +36,7 @@ print("Create user response:", create_user_response_data)
 print("Status Code:", create_user_response.status_code)
 
 # Выполняем запрос на получение пользователя по ID
-get_user_response = httpx.get(
-    f"http://localhost:8003/api/v1/users/{create_user_response_data['user']['id']}"
-)
+get_user_response = httpx.get(f"http://localhost:8003/api/v1/users/{create_user_response_data['user']['id']}")
 get_user_response_data = get_user_response.json()
 
 # Выводим полученные данные
