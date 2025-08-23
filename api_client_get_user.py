@@ -8,5 +8,5 @@ create_user_response = users_gateway_client.create_user()
 print("Create user data:", create_user_response)
 
 # Отправляем GET запрос на получение данных пользователя
-get_user_response = users_gateway_client.get_user(create_user_response['user']['id'])
+get_user_response = users_gateway_client.get_user(create_user_response.user.id)
 print("Get user data:", get_user_response)
