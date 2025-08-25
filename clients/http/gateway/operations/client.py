@@ -40,7 +40,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param query: Словарь с параметрами запроса, например: {'accountId': '123'}.
         :return: Объект httpx.Response с информацией об операции.
         """
-        return self.get("/api/v1/operations/", params=QueryParams(**query.model_dump(by_alias=True)))
+        return self.get("/api/v1/operations", params=QueryParams(**query.model_dump(by_alias=True)))
 
     def get_operations_summary_api(self, query: GetOperationsSummaryQuerySchema):
         """
@@ -49,7 +49,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param query: Словарь с параметрами запроса, например: {'accountId': '123'}.
         :return: Объект httpx.Response со статистикой по операциям для определенного счета.
         """
-        return self.get("/api/v1/operations/operations-summary/", params=QueryParams(**query.model_dump(by_alias=True)))
+        return self.get("/api/v1/operations/operations-summary", params=QueryParams(**query.model_dump(by_alias=True)))
 
     def get_operation_receipt_api(self, operation_id: str) -> Response:
         """
@@ -133,12 +133,12 @@ class OperationsGatewayHTTPClient(HTTPClient):
         return self.post("/api/v1/operations/make-cash-withdrawal-operation", json=request.model_dump(by_alias=True))
 
     def get_operations(self, account_id: str) -> GetOperationsResponseSchema:
-        query = GetOperationsQuerySchema(accountId=account_id)
+        query = GetOperationsQuerySchema(account_id=account_id)
         response = self.get_operations_api(query)
         return GetOperationsResponseSchema.model_validate_json(response.text)
 
     def get_operations_summary(self, account_id: str) -> GetOperationsSummaryResponseSchema:
-        query = GetOperationsSummaryQuerySchema(accountId=account_id)
+        query = GetOperationsSummaryQuerySchema(account_id=account_id)
         response = self.get_operations_summary_api(query)
         return GetOperationsSummaryResponseSchema.model_validate_json(response.text)
 

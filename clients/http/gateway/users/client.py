@@ -4,8 +4,6 @@ from clients.http.client import HTTPClient
 
 from clients.http.gateway.client import build_gateway_http_client
 
-import time
-
 from clients.http.gateway.users.schema import (
     GetUserResponseSchema,
     CreateUserRequestSchema,
@@ -41,13 +39,7 @@ class UsersGatewayHTTPClient(HTTPClient):
         return GetUserResponseSchema.model_validate_json(response.text)
 
     def create_user(self) -> CreateUserResponseSchema:
-        request = CreateUserRequestSchema(
-            email=f"user.{time.time()}@example.com",
-            last_name="string",
-            first_name="string",
-            middle_name="string",
-            phone_number="string"
-        )
+        request = CreateUserRequestSchema()
         response = self.create_user_api(request)
         return CreateUserResponseSchema.model_validate_json(response.text)
 
