@@ -31,8 +31,10 @@ create_user_request = CreateUserRequest(
 create_user_response: CreateUserResponse = users_gateway_service.CreateUser(create_user_request)
 print('Create user response:', create_user_response)
 
+# Формируем запрос на открытие дебетового счета, используем ID пользователя, полученный из предыдущего ответа
 open_debit_card_account_request = OpenDebitCardAccountRequest(user_id=create_user_response.user.id)
 
+# Отправляем запрос на открытие дебетового счета и получаем ответ
 open_debit_card_account_response: OpenDebitCardAccountResponse = (
     accounts_gateway_service.OpenDebitCardAccount(open_debit_card_account_request)
 )
