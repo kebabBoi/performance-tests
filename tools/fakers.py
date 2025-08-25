@@ -59,7 +59,7 @@ class Fake:
             "healthcare",
             "restaurants",
             "electricity",
-            "supermarkets",
+            "supermarkets"
         ])
 
     def last_name(self) -> str:
