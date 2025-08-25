@@ -12,9 +12,16 @@ from contracts.services.gateway.operations.rpc_make_top_up_operation_pb2 import 
     MakeTopUpOperationRequest,
     MakeTopUpOperationResponse
 )
+from contracts.services.gateway.operations.rpc_get_operation_receipt_pb2 import (
+    GetOperationReceiptRequest,
+    GetOperationReceiptResponse
+)
 from contracts.services.gateway.users.users_gateway_service_pb2_grpc import UsersGatewayServiceStub
 from contracts.services.gateway.accounts.accounts_gateway_service_pb2_grpc import AccountsGatewayServiceStub
 from contracts.services.gateway.operations.operations_gateway_service_pb2_grpc import OperationsGatewayServiceStub
+
+from contracts.services.operations.operation_pb2 import OperationStatus
+
 
 from tools.fakers import fake  # Используем генератор фейковых данных, созданный ранее
 
@@ -46,13 +53,27 @@ open_debit_card_account_request = OpenDebitCardAccountRequest(user_id=create_use
 open_debit_card_account_response: OpenDebitCardAccountResponse = (
     accounts_gateway_service.OpenDebitCardAccount(open_debit_card_account_request)
 )
-print('Open debit card account:', open_debit_card_account_response)
+print('Open debit card account response:', open_debit_card_account_response)
 
+# Формируем запрос на пополнение счета
 make_top_up_operation_request = MakeTopUpOperationRequest(
+    status=OperationStatus.OPERATION_STATUS_COMPLETED,
+    amount=fake.amount(),
     card_id=open_debit_card_account_response.account.cards[1].id,
     account_id=open_debit_card_account_response.account.id
 )
+# Выполняем операцию пополнения счета
 make_top_up_operation_response: MakeTopUpOperationResponse = (
     operations_gateway_service.MakeTopUpOperation(make_top_up_operation_request)
 )
-print('Make top up operation response', make_top_up_operation_response)
+print('Make top up operation response:', make_top_up_operation_response)
+
+# Формируем запрос на получение чека по операции
+get_operation_receipt_request = GetOperationReceiptRequest(
+    operation_id=make_top_up_operation_response.operation.id
+)
+# Получаем чек выполненной операции
+get_operation_receipt_response: GetOperationReceiptResponse = (
+    operations_gateway_service.GetOperationReceipt(get_operation_receipt_request)
+)
+print('Get operation receipt response:', get_operation_receipt_response)
