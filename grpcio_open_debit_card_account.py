@@ -1,7 +1,9 @@
 import grpc
 
-from contracts.services.gateway.users.rpc_create_user_pb2 import CreateUserRequest, CreateUserResponse
-from contracts.services.gateway.users.rpc_get_user_pb2 import GetUserRequest, GetUserResponse
+from contracts.services.gateway.users.rpc_create_user_pb2 import (
+    CreateUserRequest,
+    CreateUserResponse
+)
 from contracts.services.gateway.accounts.rpc_open_debit_card_account_pb2 import (
     OpenDebitCardAccountRequest,
     OpenDebitCardAccountResponse
