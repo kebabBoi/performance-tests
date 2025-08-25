@@ -1,9 +1,7 @@
-from typing import TypedDict
 
 from httpx import Response, QueryParams, request
 
 from clients.http.client import HTTPClient
-from clients.http.gateway.accounts.schema import GetAccountsQuerySchema, OpenDepositAccountRequestSchema
 from clients.http.gateway.accounts.schema import (
     GetAccountsQuerySchema,
     GetAccountsResponseSchema,
