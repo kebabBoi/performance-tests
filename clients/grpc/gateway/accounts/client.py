@@ -1,237 +1,113 @@
 from grpc import Channel
+
 from clients.grpc.client import GRPCClient
 from clients.grpc.gateway.client import build_gateway_grpc_client
-from contracts.services.gateway.operations.operations_gateway_service_pb2_grpc import OperationsGatewayServiceStub
-from contracts.services.gateway.operations.rpc_get_operation_pb2 import (
-    GetOperationRequest,
-    GetOperationResponse
+from contracts.services.gateway.accounts.accounts_gateway_service_pb2_grpc import AccountsGatewayServiceStub
+from contracts.services.gateway.accounts.rpc_get_accounts_pb2 import GetAccountsRequest, GetAccountsResponse
+from contracts.services.gateway.accounts.rpc_open_credit_card_account_pb2 import (
+    OpenCreditCardAccountRequest,
+    OpenCreditCardAccountResponse
 )
-from contracts.services.gateway.operations.rpc_get_operation_receipt_pb2 import (
-    GetOperationReceiptRequest,
-    GetOperationReceiptResponse
+from contracts.services.gateway.accounts.rpc_open_debit_card_account_pb2 import (
+    OpenDebitCardAccountRequest,
+    OpenDebitCardAccountResponse
 )
-from contracts.services.gateway.operations.rpc_get_operations_pb2 import (
-    GetOperationsRequest,
-    GetOperationsResponse
+from contracts.services.gateway.accounts.rpc_open_deposit_account_pb2 import (
+    OpenDepositAccountRequest,
+    OpenDepositAccountResponse
 )
-from contracts.services.gateway.operations.rpc_get_operations_summary_pb2 import (
-    GetOperationsSummaryRequest,
-    GetOperationsSummaryResponse
-)
-from contracts.services.gateway.operations.rpc_make_top_up_operation_pb2 import (
-    MakeTopUpOperationRequest,
-    MakeTopUpOperationResponse
-)
-from contracts.services.gateway.operations.rpc_make_fee_operation_pb2 import (
-    MakeFeeOperationRequest,
-    MakeFeeOperationResponse
-)
-from contracts.services.gateway.operations.rpc_make_cashback_operation_pb2 import (
-    MakeCashbackOperationRequest,
-    MakeCashbackOperationResponse
-)
-from contracts.services.gateway.operations.rpc_make_transfer_operation_pb2 import (
-    MakeTransferOperationRequest,
-    MakeTransferOperationResponse
-)
-from contracts.services.gateway.operations.rpc_make_purchase_operation_pb2 import (
-    MakePurchaseOperationRequest,
-    MakePurchaseOperationResponse
-)
-from contracts.services.gateway.operations.rpc_make_bill_payment_operation_pb2 import (
-    MakeBillPaymentOperationRequest,
-    MakeBillPaymentOperationResponse
-)
-from contracts.services.gateway.operations.rpc_make_cash_withdrawal_operation_pb2 import (
-    MakeCashWithdrawalOperationRequest,
-    MakeCashWithdrawalOperationResponse
+from contracts.services.gateway.accounts.rpc_open_savings_account_pb2 import (
+    OpenSavingsAccountRequest,
+    OpenSavingsAccountResponse
 )
 
 
-class OperationsGatewayGRPCClient(GRPCClient):
+class AccountsGatewayGRPCClient(GRPCClient):
     """
-    gRPC-клиент для взаимодействия с OperationsGatewayService.
-    Предоставляет высокоуровневые методы для работы с операциями.
+    gRPC-клиент для взаимодействия с AccountsGatewayService.
+    Предоставляет высокоуровневые методы для работы со счетами.
     """
 
     def __init__(self, channel: Channel):
         """
         Инициализация клиента с указанным gRPC-каналом.
 
-        :param channel: gRPC-канал для подключения к OperationsGatewayService.
+        :param channel: gRPC-канал для подключения к AccountsGatewayService.
         """
         super().__init__(channel)
-        self.stub = OperationsGatewayServiceStub(channel)
 
-    def get_operation_api(self, request: GetOperationRequest) -> GetOperationResponse:
+        self.stub = AccountsGatewayServiceStub(channel)
+
+    def get_accounts_api(self, request: GetAccountsRequest) -> GetAccountsResponse:
         """
-        Низкоуровневый вызов метода GetOperation через gRPC.
+        Низкоуровневый вызов метода GetAccounts через gRPC.
 
-        :param request: gRPC-запрос с ID операции.
-        :return: Ответ от сервиса с данными операции.
+        :param request: gRPC-запрос с ID пользователя.
+        :return: Ответ от сервиса с данными счетов пользователя.
         """
-        return self.stub.GetOperation(request)
+        return self.stub.GetAccounts(request)
 
-    def get_operation_receipt_api(self, request: GetOperationReceiptRequest) -> GetOperationReceiptResponse:
+    def open_deposit_account_api(self, request: OpenDepositAccountRequest) -> OpenDepositAccountResponse:
         """
-        Низкоуровневый вызов метода GetOperationReceipt через gRPC.
+        Низкоуровневый вызов метода OpenDepositAccount через gRPC.
 
-        :param request: gRPC-запрос с ID операции.
-        :return: Ответ от сервиса с данными чека операции.
+        :param request: gRPC-запрос с ID пользователя.
+        :return: Ответ от сервиса с данными открытого депозитного счета.
         """
-        return self.stub.GetOperationReceipt(request)
+        return self.stub.OpenDepositAccount(request)
 
-    def get_operations_api(self, request: GetOperationsRequest) -> GetOperationsResponse:
+    def open_savings_account_api(self, request: OpenSavingsAccountRequest) -> OpenSavingsAccountResponse:
         """
-        Низкоуровневый вызов метода GetOperations через gRPC.
+        Низкоуровневый вызов метода OpenSavingsAccount через gRPC.
 
-        :param request: gRPC-запрос с параметрами фильтрации операций.
-        :return: Ответ от сервиса со списком операций.
+        :param request: gRPC-запрос с ID пользователя.
+        :return: Ответ от сервиса с данными открытого сберегательного счета.
         """
-        return self.stub.GetOperations(request)
+        return self.stub.OpenSavingsAccount(request)
 
-    def get_operations_summary_api(self, request: GetOperationsSummaryRequest) -> GetOperationsSummaryResponse:
+    def open_debit_card_account_api(self, request: OpenDebitCardAccountRequest) -> OpenDebitCardAccountResponse:
         """
-        Низкоуровневый вызов метода GetOperationsSummary через gRPC.
+        Низкоуровневый вызов метода OpenDebitCardAccount через gRPC.
 
-        :param request: gRPC-запрос с ID счета для получения статистики.
-        :return: Ответ от сервиса со статистикой операций.
+        :param request: gRPC-запрос с ID пользователя.
+        :return: Ответ от сервиса с данными открытого дебетового счета.
         """
-        return self.stub.GetOperationsSummary(request)
+        return self.stub.OpenDebitCardAccount(request)
 
-    def make_fee_operation_api(self, request: MakeFeeOperationRequest) -> MakeFeeOperationResponse:
+    def open_credit_card_account_api(self, request: OpenCreditCardAccountRequest) -> OpenCreditCardAccountResponse:
         """
-        Низкоуровневый вызов метода MakeFeeOperation через gRPC.
+        Низкоуровневый вызов метода OpenCreditCardAccount через gRPC.
 
-        :param request: gRPC-запрос с данными для создания операции комиссии.
-        :return: Ответ от сервиса с результатом создания операции комиссии.
+        :param request: gRPC-запрос с ID пользователя.
+        :return: Ответ от сервиса с данными открытого кредитного счета.
         """
-        return self.stub.MakeFeeOperation(request)
+        return self.stub.OpenCreditCardAccount(request)
 
-    def make_top_up_operation_api(self, request: MakeTopUpOperationRequest) -> MakeTopUpOperationResponse:
-        """
-        Низкоуровневый вызов метода MakeTopUpOperation через gRPC.
+    def get_accounts(self, user_id: str) -> GetAccountsResponse:
+        request = GetAccountsRequest(user_id=user_id)
+        return self.get_accounts_api(request)
 
-        :param request: gRPC-запрос с данными для создания операции пополнения.
-        :return: Ответ от сервиса с результатом создания операции пополнения.
-        """
-        return self.stub.MakeTopUpOperation(request)
+    def open_deposit_account(self, user_id: str) -> OpenDepositAccountResponse:
+        request = OpenDepositAccountRequest(user_id=user_id)
+        return self.open_deposit_account_api(request)
 
-    def make_cashback_operation_api(self, request: MakeCashbackOperationRequest) -> MakeCashbackOperationResponse:
-        """
-        Низкоуровневый вызов метода MakeCashbackOperation через gRPC.
+    def open_savings_account(self, user_id: str) -> OpenSavingsAccountResponse:
+        request = OpenSavingsAccountRequest(user_id=user_id)
+        return self.open_savings_account_api(request)
 
-        :param request: gRPC-запрос с данными для создания операции кэшбэка.
-        :return: Ответ от сервиса с результатом создания операции кэшбэка.
-        """
-        return self.stub.MakeCashbackOperation(request)
+    def open_debit_card_account(self, user_id: str) -> OpenDebitCardAccountResponse:
+        request = OpenDebitCardAccountRequest(user_id=user_id)
+        return self.open_debit_card_account_api(request)
 
-    def make_transfer_operation_api(self, request: MakeTransferOperationRequest) -> MakeTransferOperationResponse:
-        """
-        Низкоуровневый вызов метода MakeTransferOperation через gRPC.
-
-        :param request: gRPC-запрос с данными для создания операции перевода.
-        :return: Ответ от сервиса с результатом создания операции перевода.
-        """
-        return self.stub.MakeTransferOperation(request)
-
-    def make_purchase_operation_api(self, request: MakePurchaseOperationRequest) -> MakePurchaseOperationResponse:
-        """
-        Низкоуровневый вызов метода MakePurchaseOperation через gRPC.
-
-        :param request: gRPC-запрос с данными для создания операции покупки.
-        :return: Ответ от сервиса с результатом создания операции покупки.
-        """
-        return self.stub.MakePurchaseOperation(request)
-
-    def make_bill_payment_operation_api(self, request: MakeBillPaymentOperationRequest) -> MakeBillPaymentOperationResponse:
-        """
-        Низкоуровневый вызов метода MakeBillPaymentOperation через gRPC.
-
-        :param request: gRPC-запрос с данными для создания операции оплаты счета.
-        :return: Ответ от сервиса с результатом создания операции оплаты счета.
-        """
-        return self.stub.MakeBillPaymentOperation(request)
-
-    def make_cash_withdrawal_operation_api(self, request: MakeCashWithdrawalOperationRequest) -> MakeCashWithdrawalOperationResponse:
-        """
-        Низкоуровневый вызов метода MakeCashWithdrawalOperation через gRPC.
-
-        :param request: gRPC-запрос с данными для создания операции снятия наличных.
-        :return: Ответ от сервиса с результатом создания операции снятия наличных.
-        """
-        return self.stub.MakeCashWithdrawalOperation(request)
-
-    def get_operations(self, account_id: str) -> GetOperationsResponse:
-        request = GetOperationsRequest(account_id=account_id)
-        return self.get_operations_api(request)
-
-    def get_operations_summary(self, account_id: str) -> GetOperationsSummaryResponse:
-        request = GetOperationsSummaryRequest(account_id=account_id)
-        return self.get_operations_summary_api(request)
-
-    def get_operation_receipt(self, operation_id: str) -> GetOperationReceiptResponse:
-        request = GetOperationReceiptRequest(operation_id=operation_id)
-        return self.get_operation_receipt_api(request)
-
-    def get_operation(self, operation_id: str) -> GetOperationResponse:
-        request = GetOperationRequest(operation_id=operation_id)
-        return self.get_operation_api(request)
-
-    def make_fee_operation(self, card_id: str, account_id: str) -> MakeFeeOperationResponse:
-        request = MakeFeeOperationRequest(
-            card_id=card_id,
-            account_id=account_id
-        )
-        return self.make_fee_operation_api(request)
-
-    def make_top_up_operation(self, card_id: str, account_id: str) -> MakeTopUpOperationResponse:
-        request = MakeTopUpOperationRequest(
-            card_id=card_id,
-            account_id=account_id
-        )
-        return self.make_top_up_operation_api(request)
-
-    def make_cash_back_operation(self, card_id: str, account_id: str) -> MakeCashbackOperationResponse:
-        request = MakeCashbackOperationRequest(
-            card_id=card_id,
-            account_id=account_id
-        )
-        return self.make_cashback_operation_api(request)
-
-    def make_transfer_operation(self, card_id: str, account_id: str) -> MakeTransferOperationResponse:
-        request = MakeTransferOperationRequest(
-            card_id=card_id,
-            account_id=account_id
-        )
-        return self.make_transfer_operation_api(request)
-
-    def make_purchase_operation(self, card_id: str, account_id: str) -> MakePurchaseOperationResponse:
-        request = MakePurchaseOperationRequest(
-            card_id=card_id,
-            account_id=account_id
-        )
-        return self.make_purchase_operation_api(request)
-
-    def make_bill_payment_operation(self, card_id: str, account_id: str) -> MakeBillPaymentOperationResponse:
-        request = MakeBillPaymentOperationRequest(
-            card_id=card_id,
-            account_id=account_id
-        )
-        return self.make_bill_payment_operation_api(request)
-
-    def make_cash_withdrawal_operation(self, card_id: str, account_id: str) -> MakeCashWithdrawalOperationResponse:
-        request = MakeCashWithdrawalOperationRequest(
-            card_id=card_id,
-            account_id=account_id
-        )
-        return self.make_cash_withdrawal_operation_api(request)
+    def open_credit_card_account(self, user_id: str) -> OpenCreditCardAccountResponse:
+        request = OpenCreditCardAccountRequest(user_id=user_id)
+        return self.open_credit_card_account_api(request)
 
 
-def build_operations_gateway_grpc_client() -> OperationsGatewayGRPCClient:
+def build_accounts_gateway_grpc_client() -> AccountsGatewayGRPCClient:
     """
-    Фабрика для создания экземпляра OperationsGatewayGRPCClient.
+    Фабрика для создания экземпляра AccountsGatewayGRPCClient.
 
-    :return: Инициализированный клиент для OperationsGatewayService.
+    :return: Инициализированный клиент для AccountsGatewayService.
     """
-    return OperationsGatewayGRPCClient(channel=build_gateway_grpc_client())
+    return AccountsGatewayGRPCClient(channel=build_gateway_grpc_client())
