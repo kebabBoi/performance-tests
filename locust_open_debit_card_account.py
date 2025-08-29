@@ -28,6 +28,7 @@ class GetUserScenarioUser(User):
         self.users_gateway_client = build_users_gateway_locust_http_client(self.environment)
 
         self.create_users_response = self.users_gateway_client.create_user()
+        self.accounts_gateway_client = build_accounts_gateway_locust_http_client(self.environment)
 
 
     @task
@@ -36,6 +37,4 @@ class GetUserScenarioUser(User):
         Основная нагрузочная задача: открытие дебетового счета пользователю.
         Здесь выполняется POST-запрос к /api/v1/accounts/open-debit-card-account.
         """
-        self.accounts_gateway_client = build_accounts_gateway_locust_http_client(self.environment)
-
         self.open_debit_card_account_response = self.accounts_gateway_client.open_debit_card_account(self.create_users_response.user.id)
