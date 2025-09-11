@@ -12,7 +12,7 @@ class MakeTopUpOperationSequentialTaskSet(GatewayHTTPSequentialTaskSet):
     # Храним ответы от предыдущих шагов, чтобы использовать их в следующих задачах
     create_user_response: CreateUserResponseSchema | None = None
     make_top_up_operation_response: MakeTopUpOperationResponseSchema | None = None
-    open_open_debit_card_account_response: OpenDebitCardAccountResponseSchema | None = None
+    open_debit_card_account_response: OpenDebitCardAccountResponseSchema | None = None
 
     @task
     def create_user(self):
@@ -26,7 +26,7 @@ class MakeTopUpOperationSequentialTaskSet(GatewayHTTPSequentialTaskSet):
             return
 
         # Открываем дебетовый счёт для нового пользователя
-        self.open_open_debit_card_account_response = self.accounts_gateway_client.open_debit_card_account(
+        self.open_debit_card_account_response = self.accounts_gateway_client.open_debit_card_account(
             user_id=self.create_user_response.user.id
         )
 
