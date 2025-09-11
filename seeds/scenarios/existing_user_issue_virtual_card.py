@@ -19,8 +19,7 @@ class ExistingUserIssueVirtualCardSeedsScenario(SeedsScenario):
             users=SeedUsersPlan(
                 count=300,  # Количество пользователей
                 debit_card_accounts=SeedAccountsPlan(
-                    count=1,  # Количество счётов на пользователя
-                    virtual_cards=SeedCardsPlan(count=1)  # Количество виртуальных карт
+                    count=1
                 )
             ),
         )
