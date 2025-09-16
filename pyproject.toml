@@ -127,7 +127,9 @@ dependencies = [
     "yarg (==0.1.9)",
     "zope-event (==5.1.1)",
     "zope-interface (==7.2)",
-    "zstandard (==0.25.0)"
+    "zstandard (==0.25.0)",
+    "fastapi (>=0.116.1,<0.117.0)",
+    "uvicorn (>=0.35.0,<0.36.0)"
 ]
 
 
