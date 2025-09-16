@@ -79,7 +79,7 @@ async def get_course(course_id: int):
     """
     if not (course := store.find(course_id)):
         raise HTTPException(
-            detail=f"User with id {course_id} not found",
+            detail=f"Course with id {course_id} not found",
             status_code=status.HTTP_404_NOT_FOUND
         )
 
