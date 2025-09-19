@@ -33,33 +33,33 @@ class MakeTopUpOperationSequentialTaskSet(GatewayHTTPSequentialTaskSet):
     @task
     def make_top_up_operation(self):
         # Проверяем, что счёт успешно открыт
-        if not self.open_open_debit_card_account_response:
+        if not self.open_debit_card_account_response:
             return
 
         # Выполняем операцию пополнения счёта
         self.make_top_up_operation_response = self.operations_gateway_client.make_top_up_operation(
-            card_id=self.open_open_debit_card_account_response.account.cards[0].id,
-            account_id=self.open_open_debit_card_account_response.account.id
+            card_id=self.open_debit_card_account_response.account.cards[0].id,
+            account_id=self.open_debit_card_account_response.account.id
         )
 
     @task
     def get_operations(self):
         # Получаем список операций по счёту
-        if not self.open_open_debit_card_account_response:
+        if not self.open_debit_card_account_response:
             return
 
         self.operations_gateway_client.get_operations(
-            account_id=self.open_open_debit_card_account_response.account.id
+            account_id=self.open_debit_card_account_response.account.id
         )
 
     @task
     def get_operations_summary(self):
         # Получаем агрегированную статистику по операциям
-        if not self.open_open_debit_card_account_response:
+        if not self.open_debit_card_account_response:
             return
 
         self.operations_gateway_client.get_operations_summary(
-            account_id=self.open_open_debit_card_account_response.account.id
+            account_id=self.open_debit_card_account_response.account.id
         )
 
     @task
