@@ -1,19 +1,18 @@
 from httpx import Response
 from locust.env import Environment
-from clients.http.client import HTTPClient
 
+from clients.http.client import HTTPClient
 from clients.http.gateway.cards.schema import (
     IssueVirtualCardRequestSchema,
     IssueVirtualCardResponseSchema,
     IssuePhysicalCardRequestSchema,
     IssuePhysicalCardResponseSchema
 )
-
 from clients.http.gateway.client import (
     build_gateway_http_client,
     build_gateway_locust_http_client
 )
-
+from tools.routes import APIRoutes  # Импортируем enum APIRoutes
 
 
 class CardsGatewayHTTPClient(HTTPClient):
@@ -23,21 +22,29 @@ class CardsGatewayHTTPClient(HTTPClient):
 
     def issue_virtual_card_api(self, request: IssueVirtualCardRequestSchema) -> Response:
         """
-        Создание виртуальной карты.
+        Выпуск виртуальной карты.
 
-        :param request: Словарь с данными для создания виртуальной карты.
+        :param request: Pydantic-модель с данными для выпуска виртуальной карты.
         :return: Ответ от сервера (объект httpx.Response).
         """
-        return self.post("/api/v1/cards/issue-virtual-card",json=request.model_dump(by_alias=True))
+        # Вместо /api/v1/cards используем APIRoutes.CARDS
+        return self.post(
+            f"{APIRoutes.CARDS}/issue-virtual-card",
+            json=request.model_dump(by_alias=True)
+        )
 
     def issue_physical_card_api(self, request: IssuePhysicalCardRequestSchema) -> Response:
         """
-        Создание физической карты.
+        Выпуск физической карты.
 
-        :param request: Словарь с данными для создания физической карты.
+        :param request: Pydantic-модель с данными для выпуска физической карты.
         :return: Ответ от сервера (объект httpx.Response).
         """
-        return self.post("/api/v1/cards/issue-physical-card", json=request.model_dump(by_alias=True))
+        # Вместо /api/v1/cards используем APIRoutes.CARDS
+        return self.post(
+            f"{APIRoutes.CARDS}/issue-physical-card",
+            json=request.model_dump(by_alias=True)
+        )
 
     def issue_virtual_card(self, user_id: str, account_id: str) -> IssueVirtualCardResponseSchema:
         request = IssueVirtualCardRequestSchema(user_id=user_id, account_id=account_id)
