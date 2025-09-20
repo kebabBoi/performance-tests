@@ -19,5 +19,3 @@ class HTTPClientConfig(BaseModel):
         - Если передать HttpUrl напрямую, будет ошибка типов.
         """
         return str(self.url)
-
-
