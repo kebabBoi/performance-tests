@@ -77,7 +77,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: reports
-          path: reports/
+          path: reports/${{ github.run_id }}/
 
       # 10. Корректно останавливаем docker-контейнеры и удаляем volume-ы (например, temp-файлы)
       - name: Stop test services
