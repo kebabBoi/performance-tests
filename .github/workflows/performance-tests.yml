@@ -96,7 +96,7 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: reports
-          path: reports/
+          path: reports/${{ github.run_id }}/
 
         # 2. Публикуем HTML-отчет на GitHub Pages
       - name: Deploy HTML report to GitHub Pages
