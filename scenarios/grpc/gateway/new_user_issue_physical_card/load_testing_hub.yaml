@@ -1,6 +1,6 @@
 api_url: http://localhost:13000
 service:
-  id: 1
+  id: 2
 scenario:
   id: 15
   name: "new user issue physical card"
